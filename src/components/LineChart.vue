@@ -13,7 +13,7 @@
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2" for="pickedFrom">
-          取得開始日時
+          開始日時
         </label>
         <Datepicker class="appearance-none w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
         v-model="pickedFrom"
@@ -23,7 +23,7 @@
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2" for="pickedTo">
-          取得期限日時
+          終了日時
         </label>
           <Datepicker class="appearance-none w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
             v-model="pickedTo" 
@@ -74,26 +74,26 @@ const pickedFrom = ref(new Date())
 const pickedTo = ref(new Date())
 
 const chartdata = ref({
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['1900/01/01', '1900/01/02', '1900/01/03', '1900/01/04'],
   datasets: [
     {
-      label: 'Data One',
+      label: 'SAMPLE LABEL',
+      borderColor: '#f87979',
       backgroundColor: '#f87979',
-      data: [-40, 39, 10, 40, 39, 80, 100]
+      data: [20, 39, 10, 40]
     }
   ]
 })
 
 const options = ref({
-    responsive: true,
-    
+    responsive: true,    
     plugins: {
       legend: {
         position: 'top',
       },
       title: {
         display: true,
-        text: '株価推移チャート'
+        text: 'SAMPLE SYMBOL'
       }
     }
   })
@@ -185,7 +185,7 @@ async function postStockInfoDummy() {
         },
         title: {
           display: true,
-          text: symbol.value + '：株価チャート'
+          text: symbol.value
         }
       }
     }   
