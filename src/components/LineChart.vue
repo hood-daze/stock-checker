@@ -124,30 +124,35 @@ async function postStockInfoDummy() {
       datasets: [
         {
           label: 'Open',
-          borderColor: '#f87979',
-          backgroundColor: transparentize('#f87979', 0.5),
+          borderColor: '#a3f7bf',
+          backgroundColor: transparentize('#a3f7bf', 0.5),
           data: dataOpne
         },
         {
           label: 'High',
-          backgroundColor: '#a3f7bf',
+          borderColor: '#f87979',
+          backgroundColor: transparentize('#f87979', 0.5),
           data: dataHigh
         },
         {
           label: 'Low',
-          backgroundColor: '#ffdb58',
+          borderColor: '#a1caf1',
+          backgroundColor: transparentize('#a1caf1', 0.5),
+
           data: dataLow
         },
         {
           label: 'Close',
-          backgroundColor: '#ab3f5b',
+          borderColor: '#ab3f5b',
+          backgroundColor: transparentize('#ab3f5b', 0.5),
           data: dataClose
         },
-        {
-          label: 'Adj Close',
-          backgroundColor: '#a1caf1',
-          data: dataAdjClose
-        },
+        // {
+        //   label: 'Adj Close',
+        //   borderColor: '#ffdb58',
+        //   backgroundColor: transparentize('#ffdb58', 0.5),
+        //   data: dataAdjClose
+        // },
         // {
         //   label: 'Volume',
         //   backgroundColor: '#e6e6fa',
