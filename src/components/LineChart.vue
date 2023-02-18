@@ -103,6 +103,9 @@ const locale= ref(ja)
 
 async function postStockInfoDummy() {
   try {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    
     const jsonString = '{"1641340800000":{"Open":179.6100006104,"High":180.1699981689,"Low":174.6399993896,"Close":174.9199981689,"Adj Close":173.6455383301,"Volume":94537600},"1641427200000":{"Open":172.6999969482,"High":175.3000030518,"Low":171.6399993896,"Close":172.0,"Adj Close":170.7468109131,"Volume":96904000},"1641513600000":{"Open":172.8899993896,"High":174.1399993896,"Low":171.0299987793,"Close":172.1699981689,"Adj Close":170.9155883789,"Volume":86709100}}';
     // JSONパース
     const jsonData = JSON.parse(jsonString);
