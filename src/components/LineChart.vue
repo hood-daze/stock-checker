@@ -2,14 +2,19 @@
     <div id="graph-area" class="border rounded-md p-10 mb-10">
       <Line :data="chartdata" :options="options" :width="1800" :height="500"/>
     </div>
-      
-    <div id="form" class="border rounded-md p-4 w-6/12 mx-auto">
+
+    <Form class="border rounded-md p-4 w-6/12 mx-auto" @submit="onSubmit">
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2" for="symbol">
           シンボル
         </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-        id="symbol" type="text" v-model="symbol" placeholder="（例：AAPL）">
+        <Field class="appearance-none border rounded w-full py-2 px-3 mb-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+        name="symbol"
+        :rules="validateSymbol"
+        type="text"
+        placeholder="（例：AAPL）"/>
+        <ErrorMessage class="text-red-500 font-semibold"
+        name="symbol" />
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2" for="pickedFrom">
@@ -31,12 +36,10 @@
             :locale="locale"
             :lowerLimit="pickedFrom"/>
       </div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
-      type="submit"
-      @click="postStockInfoDummy">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
         株価の取得
       </button>
-    </div>
+    </form>
   
 </template>
 
@@ -45,7 +48,7 @@ import { ColorUtill } from '../color-utill'
 import { ja } from 'date-fns/locale'
 import axios from "axios";
 import Datepicker from "vue3-datepicker"
-
+import { Form, Field, ErrorMessage} from 'vee-validate';
 import { ref, onMounted } from "vue";
 import { Line } from 'vue-chartjs'
 import {
@@ -69,7 +72,6 @@ ChartJS.register(
   Legend
 )
 
-const symbol = ref("")
 const pickedFrom = ref(new Date())
 const pickedTo = ref(new Date())
 
@@ -100,12 +102,11 @@ const options = ref({
 
 const locale= ref(ja)
 
-
-async function postStockInfoDummy() {
+async function onSubmit(values) {
+  console.log(values);
+  console.log(values.symbol);
   try {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
-    
+    await new Promise(resolve => setTimeout(resolve, 1000));    
     const jsonString = '{"1641340800000":{"Open":179.6100006104,"High":180.1699981689,"Low":174.6399993896,"Close":174.9199981689,"Adj Close":173.6455383301,"Volume":94537600},"1641427200000":{"Open":172.6999969482,"High":175.3000030518,"Low":171.6399993896,"Close":172.0,"Adj Close":170.7468109131,"Volume":96904000},"1641513600000":{"Open":172.8899993896,"High":174.1399993896,"Low":171.0299987793,"Close":172.1699981689,"Adj Close":170.9155883789,"Volume":86709100}}';
     // JSONパース
     const jsonData = JSON.parse(jsonString);
@@ -188,7 +189,7 @@ async function postStockInfoDummy() {
         },
         title: {
           display: true,
-          text: symbol.value
+          text: values.symbol
         }
       }
     }   
@@ -199,5 +200,12 @@ async function postStockInfoDummy() {
   }
 }
 
+function validateSymbol(value) {
+    // if the field is empty
+    if (!value) {
+      return 'このフィールドは必須です。';
+    }
+    return true;
+}
 
 </script>
