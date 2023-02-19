@@ -1,8 +1,11 @@
 <template>
+    
+
     <div id="graph-area" class="border rounded-md p-10 mb-10">
       <Line :data="chartdata" :options="options" :width="1800" :height="500"/>
     </div>
 
+    
     <Form class="border rounded-md p-4 w-6/12 mx-auto" 
           @submit="onSubmit"
           @invalid-submit="onInvalidSubmit">
@@ -38,9 +41,20 @@
             :locale="locale"
             :lowerLimit="pickedFrom"/>
       </div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded submit-btn" >
-        株価の取得
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded submit-btn" 
+        :disabled="isLoading">        
+        <span v-if="isLoading" class="flex">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Prpcessing...
+        </span>
+        <span v-else>
+          株価の取得
+        </span>
       </button>
+
     </form>
   
 </template>
@@ -76,6 +90,7 @@ ChartJS.register(
 
 const pickedFrom = ref(new Date())
 const pickedTo = ref(new Date())
+const isLoading = ref(false)
 
 const chartdata = ref({
   labels: ['1900/01/01', '1900/01/02', '1900/01/03', '1900/01/04'],
@@ -118,6 +133,7 @@ async function onSubmit(values) {
   console.log(values.pickedTo);
 
   try {
+    isLoading.value = true
     await new Promise(resolve => setTimeout(resolve, 1000));    
     const jsonString = '{"1641340800000":{"Open":179.6100006104,"High":180.1699981689,"Low":174.6399993896,"Close":174.9199981689,"Adj Close":173.6455383301,"Volume":94537600},"1641427200000":{"Open":172.6999969482,"High":175.3000030518,"Low":171.6399993896,"Close":172.0,"Adj Close":170.7468109131,"Volume":96904000},"1641513600000":{"Open":172.8899993896,"High":174.1399993896,"Low":171.0299987793,"Close":172.1699981689,"Adj Close":170.9155883789,"Volume":86709100}}';
     // JSONパース
@@ -208,7 +224,7 @@ async function onSubmit(values) {
   } catch (e) {
     console.log(e)
   }finally{
-
+    isLoading.value = false
   }
 }
 
